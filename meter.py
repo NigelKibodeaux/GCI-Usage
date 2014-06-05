@@ -1,3 +1,4 @@
+
 import mechanize
 import urllib
 import re
@@ -57,6 +58,17 @@ template = """
 </html>
 """
 
+# write stuff to the console
+def print_percentage(p, message):
+	output = '['
+	for i in range(1, 50):
+		if (i <= p*100/2):
+			output += '='
+		else:
+			output += ' '
+	output += ']' + ' ' + message
+	print output
+
 
 b = mechanize.Browser()
 
@@ -101,3 +113,7 @@ output = template.format(
 output_file = open('gci_usage.html', 'w')
 output_file.write(output)
 output_file.close()
+
+# output stuff to the console
+print_percentage(percentage_of_month_over, str(percentage_of_month_over*100) + '% of month over')
+print_percentage(percentage_of_data_used, str(percentage_of_data_used*100) + '% of data used')
