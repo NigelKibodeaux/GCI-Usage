@@ -5,7 +5,7 @@ import re
 import datetime
 import argparse
 
-parser = argparse.ArgumentParser(description='Writes your GCI usage into a file called gci_usage.html')
+parser = argparse.ArgumentParser(description='Grabs your usage data from GCI')
 parser.add_argument('--html', help='output the data in html to the current dir', action="store_true")
 parser.add_argument('username', help='username')
 parser.add_argument('password', help='password')
