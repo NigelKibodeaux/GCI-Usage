@@ -6,6 +6,7 @@ import datetime
 import argparse
 
 parser = argparse.ArgumentParser(description='Writes your GCI usage into a file called gci_usage.html')
+parser.add_argument('--html', help='output the data in html to the current dir', action="store_true")
 parser.add_argument('username', help='username')
 parser.add_argument('password', help='password')
 args = parser.parse_args()
@@ -104,15 +105,15 @@ updated_date = datetime.datetime.strptime(raw_updated_date, '%m/%d')
 days_used = (updated_date - start).days
 percentage_of_month_over = (1.0 * days_used) / days_in_billing_period
 
+if (args.html):
+	output = template.format(
+		percentage_of_data_used * 100, 
+		percentage_of_month_over * 100, 
+		raw_updated_date)
 
-output = template.format(
-	percentage_of_data_used * 100, 
-	percentage_of_month_over * 100, 
-	raw_updated_date)
-
-output_file = open('gci_usage.html', 'w')
-output_file.write(output)
-output_file.close()
+	output_file = open('gci_usage.html', 'w')
+	output_file.write(output)
+	output_file.close()
 
 # output stuff to the console
 print_percentage(percentage_of_month_over, str(percentage_of_month_over*100) + '% of month over')
