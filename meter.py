@@ -1,4 +1,3 @@
-
 import mechanize
 import urllib
 import re
@@ -7,6 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Grabs your usage data from GCI')
 parser.add_argument('--html', help='output the data in html to the current dir', action="store_true")
+parser.add_argument('--json', help='output the data in JSON format', action="store_true")
 parser.add_argument('username', help='username')
 parser.add_argument('password', help='password')
 args = parser.parse_args()
@@ -116,5 +116,11 @@ if (args.html):
 	output_file.close()
 
 # output stuff to the console
-print_percentage(percentage_of_month_over, str(percentage_of_month_over*100) + '% of month over')
-print_percentage(percentage_of_data_used, str(percentage_of_data_used*100) + '% of data used')
+if (args.json):
+	out = '{datetime: "' + str(datetime.datetime.now()) + '", '
+	out += 'month_over:' + str(percentage_of_month_over*100) + ', '
+	out += 'data_used:' + str(percentage_of_data_used*100) + '}\n'
+	print out
+else:
+	print_percentage(percentage_of_month_over, str(percentage_of_month_over*100) + '% of month over')
+	print_percentage(percentage_of_data_used, str(percentage_of_data_used*100) + '% of data used')
