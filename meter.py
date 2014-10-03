@@ -119,7 +119,7 @@ if (args.html):
 if (args.json):
 	out = '{datetime: "' + str(datetime.datetime.now()) + '", '
 	out += 'month_over:' + str(percentage_of_month_over*100) + ', '
-	out += 'data_used:' + str(percentage_of_data_used*100) + '}\n'
+	out += 'data_used:' + str(percentage_of_data_used*100) + '}'
 	print out
 else:
 	print_percentage(percentage_of_month_over, str(percentage_of_month_over*100) + '% of month over')
