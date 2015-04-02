@@ -20,15 +20,15 @@ percentage_of_data_used = None
 updated_date = None
 days_in_billing_period = None
 
-# html template 
+# html template
 template = """
 <html>
 	<head>
 		<style>
-			#data {{ 
+			#data {{
 				width: {}%;
 			}}
-			#month {{ 
+			#month {{
 				width: {}%;
 			}}
 			.container {{
@@ -38,7 +38,7 @@ template = """
 			}}
 			.container div {{
 				height: 20px;
-				background-color: gray; 
+				background-color: gray;
 			}}
 		</style>
 		<link rel="shortcut icon" href="http://www.gci.com/content/themes/GCI2013/library/favicon.ico">
@@ -48,7 +48,7 @@ template = """
 		<div class="container">
 			<div id="data"></div>
 		</div>
-		
+
 		Month Passed
 		<div class="container">
 			<div id="month"></div>
@@ -90,8 +90,8 @@ page_text = b.open(url, urllib.urlencode(parameters)).read()
 
 total_available = re.search('data-cap="([^"]+)"', page_text).groups()[0]
 total_used = re.search('data-total="([^"]+)"', page_text).groups()[0]
-percentage_of_data_used = re.search('data-percent="([^"]+)"', page_text).groups()[0]
-percentage_of_data_used = float(percentage_of_data_used)
+
+percentage_of_data_used = float(total_used) / float(total_available)
 billing_period = re.search('Bill Period.*?<dd class="data">([^<]+)<span', page_text, flags=re.MULTILINE|re.DOTALL).groups()[0]
 
 start, end = billing_period.split(' - ')
@@ -99,6 +99,7 @@ start = datetime.datetime.strptime(start, '%m/%d')
 end = datetime.datetime.strptime(end, '%m/%d')
 days_in_billing_period = (end - start).days
 
+page_text = b.open('https://apps.gci.com/um/service/cc:a4:62:67:e9:13').read()
 raw_updated_date = re.search('\(as of ([^)]+)\)', page_text).groups()[0]
 updated_date = datetime.datetime.strptime(raw_updated_date, '%m/%d')
 
@@ -107,8 +108,8 @@ percentage_of_month_over = (1.0 * days_used) / days_in_billing_period
 
 if (args.html):
 	output = template.format(
-		percentage_of_data_used * 100, 
-		percentage_of_month_over * 100, 
+		percentage_of_data_used * 100,
+		percentage_of_month_over * 100,
 		raw_updated_date)
 
 	output_file = open('gci_usage.html', 'w')
